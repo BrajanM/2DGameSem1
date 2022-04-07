@@ -28,15 +28,23 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.W))
         {
             if (!jumped)
-            {
+             {
                 rb.velocity = (new Vector2(0f, JumpForce));
                 jumped = true;
             }
         }
 
         
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            jumped = false;
+        }
     }
 }
