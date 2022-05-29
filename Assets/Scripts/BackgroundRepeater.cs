@@ -5,12 +5,34 @@ using UnityEngine;
 public class BackgroundRepeater : MonoBehaviour
 {
 
-    public float speed;
+    public float TargetSpeed;
     Vector2 offset;
+    float currentSpeed;
+    float maxSpeed;
+   
 
+    private void Start()
+    {
+        currentSpeed = TargetSpeed;
+        
+    }
     void Update()
     {
-        offset = new Vector2(speed * Time.time, 0);
+        maxSpeed = TargetSpeed * GameHandler.GameSpeed;
+
+        if (currentSpeed < maxSpeed)
+        {
+            currentSpeed += (maxSpeed - currentSpeed) * 0.001f;
+        }
+        if (currentSpeed > maxSpeed)
+        {
+            //currentSpeed = (currentSpeed - maxSpeed) * 0.001f;
+            currentSpeed += (maxSpeed - currentSpeed) * 0.001f;
+
+        }
+
+        offset = new Vector2(currentSpeed * Time.time, 0);
         GetComponent<Renderer>().material.mainTextureOffset = offset;
+
     }
 }

@@ -9,6 +9,7 @@ public class ObjectMoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position -= new Vector3(Speed * Time.deltaTime, 0, 0);
+        float temporarySpeed = Speed * GameHandler.GameSpeed;
+        transform.position -= new Vector3(temporarySpeed * Time.deltaTime, 0, 0);
     }
 }

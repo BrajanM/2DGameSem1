@@ -56,10 +56,17 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ObjectDestroyer.cs" />
+    <Compile Include="Assets\Scripts\TrapSpawner.cs" />
     <Compile Include="Assets\Scripts\BackgroundRepeater.cs" />
+    <Compile Include="Assets\Scripts\GameHandler.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\ObjectMoveController.cs" />
     <Compile Include="Assets\Scripts\ObjectSpawner.cs" />
+    <Compile Include="Assets\Scripts\ObjectMoveController.cs" />
+    <Compile Include="Assets\Scripts\MainMenuHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Fonts\halfelven.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

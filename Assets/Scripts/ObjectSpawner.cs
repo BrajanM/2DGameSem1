@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectSpawner : MonoBehaviour
 {
 
-    public GameObject ObjectToSpawn;
+    public GameObject[] ObjectToSpawn;
     public float Delay;
     public float[] SpawnPoints;
 
@@ -21,9 +21,14 @@ public class ObjectSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(timeFromSpawn>= Delay)
+        float temporaryDelay = Delay / GameHandler.GameSpeed;
+
+        if(timeFromSpawn>= temporaryDelay)
         {
-            Instantiate(ObjectToSpawn, new Vector3(transform.position.x, SpawnPoints[random.Next(0, SpawnPoints.Length)], transform.position.z), ObjectToSpawn.transform.rotation);
+            int objectToSpawnIndex = random.Next(ObjectToSpawn.Length);
+            int spawnPointsIndex = random.Next(0, SpawnPoints.Length);
+
+            Instantiate(ObjectToSpawn[objectToSpawnIndex], new Vector3(transform.position.x, SpawnPoints[spawnPointsIndex], transform.position.z), transform.rotation);
             timeFromSpawn = 0;
         }
 
