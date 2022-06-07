@@ -9,12 +9,15 @@ public class PlayerController : MonoBehaviour
     public float LiftingForce;
     public static int ManaPoints = 0;
     public GameObject[] LifePointsLabel;
-
+    public GameObject Bow;
+    public GameObject ArrowSpawnPoint;
+    public GameObject Arrow;
 
     private bool jumped = true;
     private Rigidbody2D rb;
     private float startingY;
     private int lifePoints = 3;
+    private float canShoot = 0;
 
     private Animator anim;
 
@@ -28,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (jumped && transform.position.y <= startingY)
+        if (jumped && transform.position.y - 2 <= startingY)
         {
             jumped = false;
             anim.SetBool("isJump", false);
@@ -45,7 +48,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKey(KeyCode.Mouse0) && canShoot>=100f)
+        {
+            ShootArrow();
+            canShoot = 0;
+        }
+        canShoot++;
+        RotateBow();
         
+
+
     }
 
     private void LostLifeEvent()
@@ -83,6 +95,20 @@ public class PlayerController : MonoBehaviour
         {
             ManaPoints++;
         }
+    }
+
+    private void RotateBow()
+    {
+        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Bow.transform.position;
+        float angle = Mathf.Atan2(direction.y,direction.x)*Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        Bow.transform.rotation = Quaternion.Slerp(Bow.transform.rotation,rotation,Time.deltaTime*4);
+
+    }
+
+    private void ShootArrow()
+    {
+        Instantiate(Arrow, new Vector3(ArrowSpawnPoint.transform.position.x, ArrowSpawnPoint.transform.position.y, ArrowSpawnPoint.transform.position.z), ArrowSpawnPoint.transform.rotation);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
