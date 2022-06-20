@@ -20,12 +20,9 @@ public class GameHandler : MonoBehaviour
     // LOCAL VARIABLES
     private int gameScore = 0;
 
-    void Start()
+    void Awake()
     {
-        GameTime = 2f;
-        GameSpeed = GameTime;
-        GameOver = false;
-        MenuPanel.SetActive(false);
+        sceneSetupParameters();
     }
 
     // Update is called once per frame
@@ -52,12 +49,39 @@ public class GameHandler : MonoBehaviour
 
     public void ReplayButtonOnClick()
     {
-        SceneManager.LoadScene("Level1");
+        sceneSetupParameters();
     }
 
     public void ExitButtonOnClick()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void sceneSetupParameters()
+    {
+        PlayerController.ManaPoints = 0;
+        GameOver = false;
+        MenuPanel.SetActive(false);
+        GameTime = 2f;
+        GameSpeed = GameTime;
+        Player.SetActive(true);
+        Player.transform.position = new Vector3(-5, -3, 0);
+        PlayerController.resetLifePoints = true;
+        ScoreText.text = "Punkty: 0";
+        destroySceneObjects();
+    }
+
+    private void destroySceneObjects()
+    {
+        GameObject[] platformsToDelete = GameObject.FindGameObjectsWithTag("Platform");
+        GameObject[] trapsToDelete = GameObject.FindGameObjectsWithTag("Trap");
+        GameObject[] manaPotionsToDelete = GameObject.FindGameObjectsWithTag("ManaPotion");
+        GameObject[] lifePointsToDelete = GameObject.FindGameObjectsWithTag("LifePoint");
+
+        foreach (GameObject gameObject in platformsToDelete) { Destroy(gameObject);}
+        foreach (GameObject gameObject in trapsToDelete) { Destroy(gameObject); }
+        foreach (GameObject gameObject in manaPotionsToDelete) { Destroy(gameObject); }
+        foreach (GameObject gameObject in lifePointsToDelete) { Destroy(gameObject); }
     }
 
 }

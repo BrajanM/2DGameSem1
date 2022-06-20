@@ -12,13 +12,14 @@ public class PlayerController : MonoBehaviour
     public GameObject Bow;
     public GameObject ArrowSpawnPoint;
     public GameObject Arrow;
+    public int lifePoints = 3;
+    public static bool resetLifePoints = false;
+
 
     private bool jumped = true;
     private Rigidbody2D rb;
     private float startingY;
-    private int lifePoints = 3;
     private float canShoot = 0;
-
     private Animator anim;
 
     void Start()
@@ -55,9 +56,21 @@ public class PlayerController : MonoBehaviour
         }
         canShoot++;
         RotateBow();
-        
 
+        if (resetLifePoints)
+        {
+            ResetLifePointsLabel();
+            resetLifePoints = false;
+        }
 
+    }
+
+    public void ResetLifePointsLabel()
+    {
+        lifePoints = 3;
+        LifePointsLabel[0].SetActive(true);
+        LifePointsLabel[1].SetActive(true);
+        LifePointsLabel[2].SetActive(true);
     }
 
     private void LostLifeEvent()
@@ -114,6 +127,10 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Ground")
+        {
+            jumped = false;
+        }
+        if (collision.gameObject.tag == "Platform")
         {
             jumped = false;
         }

@@ -8,6 +8,9 @@ TagManager:
   - ManaPotion
   - Trap
   - LifePoint
+  - Platform
+  - SlowTimePotion
+  - ImmortalityPotion
   layers:
   - Default
   - TransparentFX
