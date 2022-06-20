@@ -21,6 +21,13 @@ public class PlayerController : MonoBehaviour
     private float startingY;
     private float canShoot = 0;
     private Animator anim;
+    private float immortalityPotionCooldown = 200f; //dodane
+    private float slowTimePotionCooldown = 200f; //dodane
+
+    private bool slowTimePotionAllowed = true; //dodane
+    private bool slowTimePotionActivated = false; //dodane
+    private bool immortalityPotionAllowed = true; //dodane
+    private bool immortalityPotionActivated = false; //dodane
 
     void Start()
     {
@@ -62,6 +69,8 @@ public class PlayerController : MonoBehaviour
             ResetLifePointsLabel();
             resetLifePoints = false;
         }
+
+        BonusCooldownCounter(); // dodane
 
     }
 
@@ -124,6 +133,35 @@ public class PlayerController : MonoBehaviour
         Instantiate(Arrow, new Vector3(ArrowSpawnPoint.transform.position.x, ArrowSpawnPoint.transform.position.y, ArrowSpawnPoint.transform.position.z), ArrowSpawnPoint.transform.rotation);
     }
 
+    private void BonusCooldownCounter() //dodane
+    {
+        if (!immortalityPotionAllowed)
+        {
+            immortalityPotionCooldown--;
+            if (immortalityPotionCooldown <= 0)
+            {
+                immortalityPotionCooldown = 200f;
+                immortalityPotionAllowed = true;
+                immortalityPotionActivated = false;
+            }
+        }
+
+        if (!slowTimePotionAllowed)
+        {
+            slowTimePotionCooldown--;
+            if (slowTimePotionCooldown <=0)
+            {
+                slowTimePotionCooldown = 200f;
+                slowTimePotionActivated = false;
+                slowTimePotionAllowed = true;
+                GameHandler.GameSpeed = 2f;
+            }
+        }
+    }
+
+   
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Ground")
@@ -141,8 +179,12 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Trap")
         {
+            //dodane
+            if (!immortalityPotionActivated)
+            {
+                LostLifeEvent();
 
-            LostLifeEvent();
+            }
             Destroy(collision.gameObject, 0);
         }
         if (collision.gameObject.tag == "LifePoint")
@@ -151,5 +193,31 @@ public class PlayerController : MonoBehaviour
             GainLifeEvent();
             Destroy(collision.gameObject, 0);
         }
+
+
+        // dodane
+        if (collision.gameObject.tag == "ImmortalityPotion")
+        {
+            if (immortalityPotionAllowed)
+            {
+                immortalityPotionActivated = true;
+                immortalityPotionAllowed = false;
+            }
+            
+            Destroy(collision.gameObject, 0);
+        }
+        if (collision.gameObject.tag == "SlowTimePotion")
+        {
+            if (slowTimePotionAllowed)
+            {
+                slowTimePotionActivated = true;
+                slowTimePotionAllowed = false;
+
+                GameHandler.GameSpeed = GameHandler.GameSpeed * 0.5f;
+            }
+
+            Destroy(collision.gameObject, 0);
+        }
+
     }
 }

@@ -30,7 +30,7 @@ public class GameHandler : MonoBehaviour
     {
         if (!GameOver)
         {
-            GameSpeed = GameTime;
+            //GameSpeed = GameTime; <-do wywalenia
             gameScore = PlayerController.ManaPoints;
             updateScoreTextbox();
         }
